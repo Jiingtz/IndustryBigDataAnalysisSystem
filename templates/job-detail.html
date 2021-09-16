@@ -1,0 +1,123 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block index %}
+    <li class="dropdown"><a style="font-size: 18px" href="{% url 'index' %}">首页</a></li>
+{% endblock %}
+{% block job %}
+    <li class="dropdown active"><a style="font-size: 18px" href="{% url 'jobDetail' %}">职位</a></li>
+{% endblock %}
+{% block indexBody %}
+    <!-- ======================= Page Title ===================== -->
+    <div class="page-title">
+        <div class="container">
+            <div class="page-caption">
+                <h2>职&nbsp;位&nbsp;详&nbsp;情</h2>
+                <p><a href="{% url 'index' %}" title="Home">首页</a> <i class="ti-angle-double-right"></i>职位详情</p>
+            </div>
+        </div>
+    </div>
+    <!-- ======================= End Page Title ===================== -->
+
+    <!-- ====================== Start Job Detail 2 ================ -->
+    <section class="padd-top-80 padd-bot-60">
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-12 col-sm-7">
+                    {% for job in jobPages.object_list %}
+                        <div class="detail-wrapper">
+                            <div class="detail-wrapper-body">
+                                <div class="row" style="font-size: 17px">
+                                    <div class="col-md-4 text-center user_profile_img">
+                                        <h4 class="meg-0" style="font-size: 20px">{{ job.name }}</h4>
+                                        <span>{{ job.dutyStation }}</span>
+                                    </div>
+                                    <div class="col-md-8 user_job_detail">
+                                        <div class="col-sm-12 mrg-bot-10"><i
+                                                class="ti-credit-card padd-r-10"></i>薪资：{{ job.salary }}/月
+                                        </div>
+                                        <div class="col-sm-12 mrg-bot-10"><i
+                                                class="ti-home padd-r-10"></i>公司：{{ job.company }}
+                                        </div>
+                                        <div class="col-sm-12 mrg-bot-10"><i
+                                                class="ti-layers padd-r-10"></i>公司类型：{{ job.companyType }}
+                                        </div>
+                                        <div class="col-sm-12 mrg-bot-10"><i
+                                                class="ti-shield padd-r-10"></i>工作经验与学历要求：{{ job.experience }}/{{ job.education }}
+                                        </div>
+                                        <div class="col-sm-12 mrg-bot-10"><i
+                                                class="ti-user padd-r-10"></i>技术需求：{{ job.technology }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                </div>
+                <div class="clearfix"></div>
+                <div class="utf_flexbox_area padd-0">
+                    <ul class="pagination">
+                        {% if jobPages.has_previous %}
+                            <li class="page-item"><a class="page-link"
+                                                     href="?{{ jobPages.previous_page_number.querystring }}&keywords={{ searchKey }}&area={{ area }}&salary={{ salary }}"
+                                                     aria-label="Previous"> <span
+                                    aria-hidden="true">«</span> <span class="sr-only">上一页</span> </a></li>
+                        {% endif %}
+                        {% for page in jobPages.pages %}
+                            {% if page %}
+                                {% ifequal page jobPages.number %}
+                                    <li class="page-item active"><a class="page-link"
+                                                                    href="?{{ page.querystring }}&keywords={{ searchKey }}&area={{ area }}&salary={{ salary }}">{{ page }}</a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item"><a class="page-link"
+                                                             href="?{{ page.querystring }}&keywords={{ searchKey }}&area={{ area }}&salary={{ salary }}"
+                                                             class="page">{{ page }}</a></li>
+                                {% endifequal %}
+                            {% else %}
+                                <li class="page-item"><a href="javascript:return false;">...</a></li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if jobPages.has_next %}
+                            <li class="page-item"><a class="page-link"
+                                                     href="?{{ jobPages.next_page_number.querystring }}&keywords={{ searchKey }}&area={{ area }}&salary={{ salary }}"
+                                                     aria-label="Next"> <span
+                                    aria-hidden="true">»</span> <span class="sr-only">下一页</span> </a></li>
+                        {% endif %}
+
+                    </ul>
+                </div>
+                <br>
+                <!-- End Row -->
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4 class="mrg-bot-30">热&nbsp;门&nbsp;工&nbsp;作</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    {% for hot_job in hot_jobs %}
+                        <!-- Hot Job -->
+                        <div class="col-md-3 col-sm-6">
+                            <div class="utf_grid_job_widget_area">
+                                <div class="utf_job_like">
+                                    <label class="toggler toggler-danger">
+                                        <input type="checkbox">
+                                        <i class="fa fa-heart"></i>
+                                    </label>
+                                </div>
+                                <div class="u-content">
+                                    <h5><a href="javascript:void(0)">{{ hot_job.0 }}</a></h5>
+                                    <p class="text-muted">需求量：{{ hot_job.1 }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ====================== End Job Detail 2 ================ -->
+{% endblock %}
+{% block search %}{% endblock %}

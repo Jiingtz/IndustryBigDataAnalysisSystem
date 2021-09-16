@@ -1,0 +1,170 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block popup_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/popup/css/dialog-wilma.css' %}">
+{% endblock %}
+
+{% block index %}
+    <li class="dropdown"><a style="font-size: 18px" href="{% url 'index' %}">首页</a></li>
+{% endblock %}
+
+{% block jobForecast %}
+    <li class="dropdown active"><a style="font-size: 18px" href="{% url 'jobForecast' %}">职位推荐</a></li>
+{% endblock %}
+
+{% block popup %}
+    <div id="Popup" class="dialog" style="z-index: 100001">
+        <div class="dialog__overlay"></div>
+        <div class="dialog__content">
+            <div class="morph-shape">
+                <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 560 280"
+                     preserveAspectRatio="none">
+                    <rect x="3" y="3" fill="none" width="556" height="276"/>
+                </svg>
+            </div>
+            <div class="dialog-inner" style="max-height: 600px;overflow:auto;">
+                <p id="title"
+                   style="text-align: center;font-size: 20px;font-family: Candara "></p>
+                <br>
+                <div style="text-align: right">
+                    <button class="action" data-dialog-close>关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block indexBody %}
+
+    <!-- ======================= Start Page Title ===================== -->
+    <div class="page-title">
+        <div class="container">
+            <div class="page-caption">
+                <h2>职位推荐</h2>
+                <p><a href="{% url 'index' %}" title="Home">首页</a> <i class="ti-angle-double-right"></i>职位推荐</p>
+            </div>
+        </div>
+    </div>
+    <!-- ======================= End Page Title ===================== -->
+
+    <!-- ====================== Start Signup Form ============= -->
+    <section class="padd-top-80 padd-bot-80">
+        <div class="container">
+            <div class="log-box">
+                <form class="log-form" onSubmit="fun1();return false;">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>学历</label>
+                            <div class="col-md-12 col-sm-12 padd-0">
+                                <select name="education" id="education" class="wide form-control">
+                                    <option value="初中及以下" data-display="">初中及以下</option>
+                                    <option value="中技">中技</option>
+                                    <option value="中专">中专</option>
+                                    <option value="高中">高中</option>
+                                    <option value="大专">大专</option>
+                                    <option value="本科">本科</option>
+                                    <option value="应届">应届本科</option>
+                                    <option value="硕士">硕士</option>
+                                    <option value="博士">博士</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>掌握的专业技能<span style="color: red;">（ 以 “ / ” 划分 ）</span></label>
+                            <input id="expertise" name="expertise" type="text" class="form-control"
+                                   placeholder="">
+                            <input id="hiddenText" type="text" style="display:none" />
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>方向</label>
+                            <div class="col-md-12 col-sm-12 padd-0">
+                                <select name="orientation" id="orientation" class="wide form-control">
+                                    <option value="后端开发" data-display="">后端开发</option>
+                                    <option value="移动开发">移动开发</option>
+                                    <option value="人工智能">人工智能</option>
+                                    <option value="前端开发">前端开发</option>
+                                    <option value="测试">测试</option>
+                                    <option value="运维">运维</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group text-center mrg-top-15">
+                            <button onclick="forecast_salary()" type="button" class="btn theme-btn btn-m full-width">
+                                推荐
+                            </button>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <!-- ====================== End Signup Form ============= -->
+    <script>
+
+    </script>
+{% endblock %}
+
+{% block search %}{% endblock %}
+
+{% block popup_js %}
+    <script>
+        var Popup = document.getElementById('Popup'),
+            dlg = new DialogFx(Popup);
+
+        function forecast_salary() {
+            var education = $("#education").find("option:selected").text();
+            var expertise = $("#expertise").val();
+            var orientation = $("#orientation").find("option:selected").text();
+            console.log(education, expertise, orientation)
+            $.ajax({
+                url: '/analysis/jobForecast',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    'education': education,
+                    'expertise': expertise,
+                    'orientation': orientation,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function (data) {
+                    var jobDetail = ''
+                    for (var i = 0; i < data.length; i++) {
+                        jobDetail += `<div class="detail-wrapper">
+                            <div class="detail-wrapper-body">
+                                <div class="row" style="font-size: 17px">
+                                    <div class="col-md-4 text-center user_profile_img">
+                                        <h4 class="meg-0" style="font-size: 20px">` + data.position[i][0] + `</h4>
+                                        <span>` + data.position[i][1] + `</span>
+                                    </div>
+                                    <div class="col-md-8 user_job_detail">
+                                        <div class="col-sm-12 mrg-bot-10"><i
+                                                class="ti-credit-card padd-r-10"></i>薪资：` + data.position[i][2] + `/月
+                                        </div>
+                                        <div class="col-sm-12 mrg-bot-10"><i
+                                                class="ti-home padd-r-10"></i>公司：` + data.position[i][5] + `
+                                        </div>
+                                        <div class="col-sm-12 mrg-bot-10"><i
+                                                class="ti-shield padd-r-10"></i>工作经验与学历要求：` + data.position[i][3] + `/` + data.position[i][4] + `
+                                        </div>
+                                        <div class="col-sm-12 mrg-bot-10"><i
+                                                class="ti-user padd-r-10"></i>技术需求：` + data.position[i][7] + `</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`
+                    }
+                    $("#title").html('<strong>推荐职位有：</strong><br><br>' + jobDetail);
+                    dlg.toggle.bind(dlg)()
+                }
+            })
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,214 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block popup_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/popup/css/dialog-wilma.css' %}">
+{% endblock %}
+
+{% block index %}
+    <li class="dropdown"><a style="font-size: 18px" href="{% url 'index' %}">首页</a></li>
+{% endblock %}
+
+{% block forecast %}
+    <li class="dropdown active"><a style="font-size: 18px" href="{% url 'salaryForecast' %}">薪资预测</a></li>
+{% endblock %}
+
+{% block popup %}
+    <div id="Popup" class="dialog" style="z-index: 100001">
+        <div class="dialog__overlay"></div>
+        <div class="dialog__content">
+            <div class="morph-shape">
+                <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 560 280"
+                     preserveAspectRatio="none">
+                    <rect x="3" y="3" fill="none" width="556" height="276"/>
+                </svg>
+            </div>
+            <div class="dialog-inner">
+                <p id="title"
+                   style="text-align: center;color: #dc780c;font-size: 20px;font-family: Candara "></p>
+                <br>
+                <div style="text-align: right">
+                    <button class="action" data-dialog-close>关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block indexBody %}
+
+    <!-- ======================= Start Page Title ===================== -->
+    <div class="page-title">
+        <div class="container">
+            <div class="page-caption">
+                <h2>薪资预测</h2>
+                <p><a href="{% url 'index' %}" title="Home">首页</a> <i class="ti-angle-double-right"></i>薪资预测</p>
+            </div>
+        </div>
+    </div>
+    <!-- ======================= End Page Title ===================== -->
+
+    <!-- ====================== Start Signup Form ============= -->
+    <section class="padd-top-80 padd-bot-80">
+        <div class="container">
+            <div class="log-box">
+                <form class="log-form">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>方向</label>
+                            <div class="col-md-12 col-sm-12 padd-0">
+                                <select name="orientation" id="orientation" class="wide form-control"
+                                        onchange="orientation2position()">
+                                    <option value="测试" data-display="">测试</option>
+                                    <option value="后端开发">后端开发</option>
+                                    <option value="前端开发">前端开发</option>
+                                    <option value="人工智能">人工智能</option>
+                                    <option value="数据">数据</option>
+                                    <option value="移动开发">移动开发</option>
+                                    <option value="运维/技术支持">运维/技术支持</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>职位</label>
+                            <div class="col-md-12 col-sm-12 padd-0">
+                                <select id="positions" name="positions" class="wide form-control">
+                                                                        <option value="测试工程师" data-display="">测试工程师</option>
+                                                                        <option value="测试开发">测试开发</option>
+                                                                        <option value="功能测试">功能测试</option>
+                                                                        <option value="软件测试">软件测试</option>
+                                                                        <option value="渗透测试">渗透测试</option>
+                                                                        <option value="性能测试">性能测试</option>
+                                                                        <option value="移动端测试">移动端测试</option>
+                                                                        <option value="硬件测试">硬件测试</option>
+                                                                        <option value="游戏测试">游戏测试</option>
+                                                                        <option value="自动化测试">自动化测试</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>学历</label>
+                            <div class="col-md-12 col-sm-12 padd-0">
+                                <select name="education" id="education" class="wide form-control">
+                                    <option value="不限" data-display="">学历不限</option>
+                                    <option value="大专">大专</option>
+                                    <option value="本科">本科</option>
+                                    <option value="硕士">硕士</option>
+                                    <option value="博士">博士</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>工作经验</label>
+                            <div class="col-md-12 col-sm-12 padd-0">
+                                <select name="experience" id="experience" class="wide form-control">
+                                    <option value="不限" data-display="">经验不限</option>
+                                    <option value="1-3年">1-3年</option>
+                                    <option value="3-5年">3-5年</option>
+                                    <option value="5-10年">5-10年</option>
+                                    <option value="10年以上">10年以上</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>公司规模</label>
+                            <div class="col-md-12 col-sm-12 padd-0">
+                                <select name="company_scale" id="company_scale" class="wide form-control">
+                                    <option value="0-20人" data-display="">0-20人</option>
+                                    <option value="20-99人">20-99人</option>
+                                    <option value="100-499人">100-499人</option>
+                                    <option value="500-999人">500-999人</option>
+                                    <option value="1000-9999人">1000-9999人</option>
+                                    <option value="10000人以上">10000人以上</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group text-center mrg-top-15">
+                            <button onclick="forecast_salary()" type="button" class="btn theme-btn btn-m full-width">
+                                开始预测
+                            </button>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <!-- ====================== End Signup Form ============= -->
+    <script>
+        function orientation2position() {
+            var orientation = $("#orientation").find("option:selected").text();
+            console.log(orientation)
+            $.ajax({
+                url: '/analysis/orientation2position',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    'orientation': orientation,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function (data) {
+                    console.log(data.length)
+                    var position_html = ''
+                    var ul_html = ''
+                    for (var i = 0; i < data.length; i++) {
+                        position_html += `<option value="` + data.positions[i] + `">` + data.positions[i] + `</option>`
+                        ul_html += `<li data-value="` + data.positions[i] + `" class="option">` + data.positions[i] + `</li>`
+                    }
+                    console.log(position_html)
+                    $("#positions").html("")
+                    $("#positions").html(position_html)
+                    $(".nice-select.wide.form-control:eq(1)").empty()
+                    $(".nice-select.wide.form-control:eq(1)").html(`<span class="current">`+data.positions[0]+`</span><ul class="list">`+ul_html+`</ul>`)
+                }
+            })
+        }
+    </script>
+{% endblock %}
+
+{% block search %}{% endblock %}
+
+{% block popup_js %}
+    <script>
+        var Popup = document.getElementById('Popup'),
+            dlg = new DialogFx(Popup);
+
+        function forecast_salary() {
+            var orientation = $("#orientation").find("option:selected").text();
+            var position = $("#positions").find("option:selected").text();
+            var education = $("#education").find("option:selected").text();
+            var experience = $("#experience").find("option:selected").text();
+            var company_scale = $("#company_scale").find("option:selected").text();
+            console.log(orientation, position, education, experience, company_scale)
+            $.ajax({
+                url: '/analysis/salaryForecast',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    'orientation': orientation,
+                    'position': position,
+                    'education': education,
+                    'experience': experience,
+                    'company_scale': company_scale,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function (data) {
+                    $("#title").html('预测薪资为：<strong>' + data.salary + 'k</strong>');
+                    {#$("#introduction").html(data.introduction);#}
+                    {#$('#origin').attr('href', data.link);#}
+                    dlg.toggle.bind(dlg)()
+                }
+            })
+        }
+    </script>
+{% endblock %}

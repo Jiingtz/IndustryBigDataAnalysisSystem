@@ -1,0 +1,684 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Industry Big Data Analysis System</title>
+
+    <!-- Favicon Icon -->
+    <link rel="shortcut icon" href={% static "imgs/favicon.png" %}>
+
+    <!-- CSS -->
+    {% block echarts %}{% endblock %}
+    <link rel="stylesheet" href="{% static "plugins/bootstrap/css/bootstrap.min.css" %}">
+    <link rel="stylesheet" href="{% static "plugins/bootstrap/css/bootstrap-select.min.css" %}">
+    <link rel="stylesheet" href="{% static "plugins/icons/css/icons.css" %}">
+    <link rel="stylesheet" href="{% static "plugins/animate/animate.css" %}">
+    <link rel="stylesheet" href="{% static "plugins/bootstrap/css/bootsnav.css" %}">
+    <link rel="stylesheet" href="{% static "plugins/nice-select/css/nice-select.css" %}">
+    <link rel="stylesheet" href="{% static "plugins/aos-master/aos.css" %}">
+    <link rel="stylesheet" href="{% static "css/style.css" %}">
+    <link rel="stylesheet" href="{% static "css/jquery-ui.css" %}">
+    <link rel="stylesheet" href="{% static "css/responsive.css" %}">
+    <!--**********  弹窗样式 start  **********-->
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/popup/css/normalize.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/popup/css/demo.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/popup/css/dialog.css' %}">
+    {% block popup_css %}
+        <link rel="stylesheet" type="text/css" href="{% static 'plugins/popup/css/dialog-donna.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'plugins/popup/css/radio.css' %}">
+    {% endblock %}
+    <script src="{% static 'plugins/popup/js/modernizr.custom.js' %}"></script>
+    <script src="{% static 'plugins/popup/js/classie.js' %}"></script>
+    <script src="{% static 'plugins/popup/js/dialogFx.js' %}"></script>
+    <!--**********  弹窗样式 end  **********-->
+    <script src={% static "js/jquery.min.js" %}></script>
+</head>
+<body class="utf_skin_area">
+
+{% block popup %}
+    <!-- ======================= Start Popup ===================== -->
+    <div id="Popup" class="dialog" style="z-index: 100001">
+        <div class="dialog__overlay"></div>
+        <div class="dialog__content">
+            <br>
+            <p id="title" style="font-size: 30px;"></p><br>
+            <p id="introduction" style="height:400px;width:600px;overflow:auto;font-size: 20px">
+            </p>
+            <div style="text-align: left;font-size: 18px">
+                <i style="display:inline-block;vertical-align:middle">
+                    <svg t="1630982742511" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                         xmlns="http://www.w3.org/2000/svg" p-id="2661" width="25" height="25">
+                        <path d="M512 1024c282.752 0 512-229.248 512-512S794.752 0 512 0 0 229.248 0 512s229.248 512 512 512z m0-85.333333C276.352 938.666667 85.333333 747.648 85.333333 512S276.352 85.333333 512 85.333333s426.666667 191.018667 426.666667 426.666667-191.018667 426.666667-426.666667 426.666667z"
+                              fill="#2CB18D" p-id="2662"></path>
+                        <path d="M540.373333 480.128l-3.882666-3.072a42.666667 42.666667 0 0 1-10.496-59.434667l73.386666-104.832a42.666667 42.666667 0 0 1 69.930667 48.938667l-61.184 87.381333a42.666667 42.666667 0 0 0 69.888 48.938667l61.184-87.381333a128 128 0 1 0-209.706667-146.816L456.106667 368.64a128 128 0 0 0 31.402666 178.261333 42.666667 42.666667 0 0 0 52.906667-66.816z"
+                              fill="#4D84DB" p-id="2663"></path>
+                        <path d="M483.626667 543.872l3.882666 3.072a42.666667 42.666667 0 0 1 10.496 59.434667l-73.386666 104.832a42.666667 42.666667 0 0 1-69.930667-48.938667l61.184-87.381333a42.666667 42.666667 0 1 0-69.888-48.938667l-61.184 87.381333a128 128 0 0 0 209.706667 146.816l73.386666-104.832a128 128 0 0 0-31.402666-178.261333 42.666667 42.666667 0 0 0-52.906667 66.816z"
+                              fill="#4D84DB" p-id="2664"></path>
+                    </svg>
+                </i>
+                来源：<a id="origin" style="border-bottom:1px dashed #db0707;" href="#" target="_blank">查看详情</a>
+            </div>
+            <div style="text-align: right">
+                <button class="action" data-dialog-close="">关闭</button>
+            </div>
+        </div>
+    </div>
+    <!-- ======================= End Popup ===================== -->
+{% endblock %}
+
+<div class="page_preloader"></div>
+<!-- ======================= Start Navigation ===================== -->
+
+<nav class="navbar navbar-default navbar-mobile navbar-fixed white no-background bootsnav">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu"><i
+                    class="fa fa-bars"></i></button>
+            <a class="navbar-brand" href="index.html">
+                <img src="{% static "imgs/logo-light.png" %}"
+                     class="logo logo-display"
+                     alt=""> <img src="{% static "/imgs/logo.png" %}"
+                                  class="logo logo-scrolled" alt=""> </a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-menu">
+            <ul class="nav navbar-nav navbar-left" data-in="fadeInDown" data-out="fadeOutUp">
+                {% block index %}
+                    <li class="dropdown active"><a style="font-size: 18px" href="{% url 'index' %}">首页</a>
+                    </li>{% endblock %}
+                {% block job %}
+                    <li class="dropdown"><a style="font-size: 18px" href="{% url 'jobDetail' %}">职位</a>
+                    </li>{% endblock %}
+                {% block company %}
+                    <li class="dropdown"><a style="font-size: 18px" href="{% url 'companies' %}">公司</a>
+                    </li>{% endblock %}
+                {% block analyse %}
+                    <li class="dropdown"><a style="font-size: 18px" href="{% url 'analyse' %}">分析</a></li>{% endblock %}
+                {% block forecast %}
+                    <li class="dropdown"><a style="font-size: 18px" href="{% url 'salaryForecast' %}">薪资预测</a></li>
+                {% endblock %}
+                {% block jobForecast %}
+                    <li class="dropdown"><a style="font-size: 18px" href="{% url 'jobForecast' %}">职位推荐</a></li>
+                {% endblock %}
+            </ul>
+            <ul id="user-head" class="nav navbar-nav navbar-right">
+                <li class="br-right"><a class="btn-signup red-btn" href="javascript:void(0)" data-toggle="modal"
+                                        data-target="#signin"><i class="login-icon ti-user"></i>登录</a></li>
+                <li class="sign-up"><a class="btn-signup red-btn" href="{% url 'register' %}"><span
+                        class="ti-briefcase"></span>注册</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- ======================= End Navigation ===================== -->
+
+{% block indexBody %}
+    <!-- ======================= Start Banner ===================== -->
+    <div class="utf_main_banner_area" style="background-image:url(../static/imgs/slider_bg.jpg);" data-overlay="8">
+        <div class="container">
+            <div class="col-md-8 col-sm-10">
+
+                <div class="caption cl-white home_two_slid">
+                    <h2>检&nbsp;索&nbsp;超&nbsp;过&nbsp;<span class="theme-cl">60,000</span>&nbsp;个&nbsp;职&nbsp;位</h2>
+                    <p>热门搜索关键字：
+                        <span class="trending_key"><a href="#">大数据</a></span>
+                        <span class="trending_key"><a href="#">分布式</a></span>
+                        <span class="trending_key"><a href="#">算法开发</a></span>
+                        <span class="trending_key"><a href="#">IOS开发</a></span>
+                        <span class="trending_key"><a href="#">Android开发</a></span>
+                        <span class="trending_key"><a href="#">数据分析师</a></span></p>
+                </div>
+
+                <form action="{% url 'SearchJob' %}" method="post">
+                    {% csrf_token %}
+                    <fieldset class="utf_home_form_one">
+                        <div class="col-md-4 col-sm-4 padd-0">
+                            <input name="keywords" id="keywords" type="text" class="form-control br-1"
+                                   placeholder="请输入职位关键词..."/>
+                        </div>
+                        <div class="col-md-3 col-sm-3 padd-0">
+                            <select name="area" id="area" class="wide form-control br-1">
+                                <option data-display="地区">全国</option>
+                                <option value="北京">北京</option>
+                                <option value="上海">上海</option>
+                                <option value="深圳">深圳</option>
+                                <option value="广州">广州</option>
+                                <option value="杭州">杭州</option>
+                                <option value="厦门">厦门</option>
+                                <option value="南京">南京</option>
+                                <option value="天津">天津</option>
+                                <option value="武汉">武汉</option>
+                                <option value="福州">福州</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 col-sm-3 padd-0">
+                            <select name="salary" id="salary" class="wide form-control">
+                                <option data-display="薪资">不限</option>
+                                <option value="3k以下">3k以下</option>
+                                <option value="3-5k">3-5k</option>
+                                <option value="5-10k">5-10k</option>
+                                <option value="10-15k">10-15k</option>
+                                <option value="15-20k">15-20k</option>
+                                <option value="20-30k">20-30k</option>
+                                <option value="30-50k">30-50k</option>
+                                <option value="50k以上">50k以上</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2 col-sm-2 padd-0 m-clear">
+                            <button id="search" type="submit" class="btn theme-btn cl-white seub-btn">搜索</button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- ======================= End Banner ===================== -->
+
+
+
+    <!-- ================= Job start ========================= -->
+    <section class="padd-top-80 padd-bot-80">
+        <div class="container">
+            <ul class="nav nav-tabs nav-advance theme-bg" role="tablist">
+                <li class="nav-item active"><a style="font-size: 20px" class="nav-link" data-toggle="tab" href="#recent"
+                                               role="tab">公&nbsp;司</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade in show active" id="recent" role="tabpanel">
+                    <div class="row">
+                        <!-- Company -->
+                        <div class="col-md-3 col-sm-6">
+                            <div class="utf_grid_job_widget_area"><span class="job-type full-type">已上市</span>
+                                <div class="utf_job_like">
+                                    <label class="toggler toggler-danger">
+                                        <input type="checkbox">
+                                        <i class="fa fa-heart"></i>
+                                    </label>
+                                </div>
+                                <div class="u-content">
+                                    <div class="avatar box-80"><a href="javascript:void(0)"
+                                                                  onclick="company_detail(this)">
+                                        <img class="img-responsive" src="{% static "imgs/company/alibaba.png" %}"
+                                             alt="">阿里巴巴</a></div>
+                                    <h5><a href="javascript:void(0)" onclick="company_detail(this)">阿里巴巴</a></h5>
+                                    <p class="text-muted">互联网</p>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Company -->
+                        <div class="col-md-3 col-sm-6">
+                            <div class="utf_grid_job_widget_area"><span class="job-type full-type">已上市</span>
+                                <div class="utf_job_like">
+                                    <label class="toggler toggler-danger">
+                                        <input type="checkbox">
+                                        <i class="fa fa-heart"></i>
+                                    </label>
+                                </div>
+                                <div class="u-content">
+                                    <div class="avatar box-80"><a href="javascript:void(0)"
+                                                                  onclick="company_detail(this)">
+                                        <img class="img-responsive"
+                                             src="{% static "imgs/company/xiaomi.png" %}" alt="">小米</a>
+                                    </div>
+                                    <h5><a href="javascript:void(0)" onclick="company_detail(this)">小米</a></h5>
+                                    <p class="text-muted">互联网</p>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Company -->
+                        <div class="col-md-3 col-sm-6">
+                            <div class="utf_grid_job_widget_area"><span class="job-type internship-type">不需要融资</span>
+                                <div class="utf_job_like">
+                                    <label class="toggler toggler-danger">
+                                        <input type="checkbox">
+                                        <i class="fa fa-heart"></i>
+                                    </label>
+                                </div>
+                                <div class="u-content">
+                                    <div class="avatar box-80"><a href="javascript:void(0)"
+                                                                  onclick="company_detail(this)">
+                                        <img class="img-responsive"
+                                             src="{% static "imgs/company/huawei.png" %}"
+                                             alt="">华为</a></div>
+                                    <h5><a href="javascript:void(0)" onclick="company_detail(this)">华为</a></h5>
+                                    <p class="text-muted">计算机软件</p>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Company -->
+                        <div class="col-md-3 col-sm-6">
+                            <div class="utf_grid_job_widget_area"><span class="job-type internship-type">不需要融资</span>
+                                <div class="utf_job_like">
+                                    <label class="toggler toggler-danger">
+                                        <input type="checkbox">
+                                        <i class="fa fa-heart"></i>
+                                    </label>
+                                </div>
+                                <div class="u-content">
+                                    <div class="avatar box-80"><a href="javascript:void(0)"
+                                                                  onclick="company_detail(this)">
+                                        <img class="img-responsive"
+                                             src="{% static "imgs/company/tencent.png" %}"
+                                             alt="">腾讯</a></div>
+                                    <h5><a href="javascript:void(0)" onclick="company_detail(this)">腾讯</a></h5>
+                                    <p class="text-muted">互联网</p>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Company -->
+                        <div class="col-md-3 col-sm-6">
+                            <div class="utf_grid_job_widget_area"><span class="job-type full-type">已上市</span>
+                                <div class="utf_job_like">
+                                    <label class="toggler toggler-danger">
+                                        <input type="checkbox">
+                                        <i class="fa fa-heart"></i>
+                                    </label>
+                                </div>
+                                <div class="u-content">
+                                    <div class="avatar box-80"><a href="javascript:void(0)"
+                                                                  onclick="company_detail(this)">
+                                        <img
+                                                class="img-responsive"
+                                                src="{% static "imgs/company/kuaishou.png" %}"
+                                                alt="">快手</a></div>
+                                    <h5><a href="javascript:void(0)" onclick="company_detail(this)">快手</a></h5>
+                                    <p class="text-muted">社交网络</p>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Company -->
+                        <div class="col-md-3 col-sm-6">
+                            <div class="utf_grid_job_widget_area"><span class="job-type full-type">已上市</span>
+                                <div class="utf_job_like">
+                                    <label class="toggler toggler-danger">
+                                        <input type="checkbox">
+                                        <i class="fa fa-heart"></i>
+                                    </label>
+                                </div>
+                                <div class="u-content">
+                                    <div class="avatar box-80">
+                                        <a id="company_logo" href="javascript:void(0)" onclick="company_detail(this)">
+                                            <img class="img-responsive" src="{% static "imgs/company/meituan.png" %}"
+                                                 alt="">美团
+                                        </a>
+                                    </div>
+                                    <h5><a id="company_name" href="javascript:void(0)"
+                                           onclick="company_detail(this)">美团</a>
+                                    </h5>
+                                    <p class="text-muted">互联网</p>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Company -->
+                        <div class="col-md-3 col-sm-6">
+                            <div class="utf_grid_job_widget_area"><span class="job-type full-type">已上市</span>
+                                <div class="utf_job_like">
+                                    <label class="toggler toggler-danger">
+                                        <input type="checkbox">
+                                        <i class="fa fa-heart"></i>
+                                    </label>
+                                </div>
+                                <div class="u-content">
+                                    <div class="avatar box-80"><a href="javascript:void(0)"
+                                                                  onclick="company_detail(this)">
+                                        <img
+                                                class="img-responsive"
+                                                src="{% static "imgs/company/baidu.png" %}"
+                                                alt="">百度</a></div>
+                                    <h5><a href="javascript:void(0)" onclick="company_detail(this)">百度</a></h5>
+                                    <p class="text-muted">互联网</p>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Company -->
+                        <div class="col-md-3 col-sm-6">
+                            <div class="utf_grid_job_widget_area"><span class="job-type part-type">D轮及以上</span>
+                                <div class="utf_job_like">
+                                    <label class="toggler toggler-danger">
+                                        <input type="checkbox">
+                                        <i class="fa fa-heart"></i>
+                                    </label>
+                                </div>
+                                <div class="u-content">
+                                    <div class="avatar box-80"><a href="javascript:void(0)"
+                                                                  onclick="company_detail(this)">
+                                        <img
+                                                class="img-responsive"
+                                                src="{% static "imgs/company/didi.png" %}"
+                                                alt="">滴滴</a></div>
+                                    <h5><a href="javascript:void(0)" onclick="company_detail(this)">滴滴</a></h5>
+                                    <p class="text-muted">移动互联网</p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-12 mrg-top-20 text-center">
+                <a href="{% url 'companies' %}" class="btn theme-btn btn-m">浏&nbsp;览&nbsp;所&nbsp;有&nbsp;公&nbsp;司</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= Category start ========================= -->
+    <section class="utf_job_category_area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="heading">
+                        <h2>工&nbsp;作&nbsp;类&nbsp;型</h2>
+                        <p>包括但不仅包括以下类型</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-3 col-sm-6">
+                        <a href="javascript:void(0)" title="">
+                            <div class="utf_category_box_area">
+                                <div class="utf_category_desc">
+                                    <div class="utf_category_icon"><i class="icon-bargraph" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="category-detail utf_category_desc_text">
+                                        <h4>Web开发</h4>
+                                        <p>51453 Jobs</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <a href="javascript:void(0)" title="">
+                            <div class="utf_category_box_area">
+                                <div class="utf_category_desc">
+                                    <div class="utf_category_icon"><i class="icon-tools" aria-hidden="true"></i></div>
+                                    <div class="category-detail utf_category_desc_text">
+                                        <h4>数据科学与大数据分析</h4>
+                                        <p>3684 Jobs</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <a href="javascript:void(0)" title="">
+                            <div class="utf_category_box_area">
+                                <div class="utf_category_desc">
+                                    <div class="utf_category_icon"><i class="ti-briefcase" aria-hidden="true"></i></div>
+                                    <div class="category-detail utf_category_desc_text">
+                                        <h4>会计与咨询</h4>
+                                        <p>364 Jobs</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <a href="javascript:void(0)" title="">
+                            <div class="utf_category_box_area">
+                                <div class="utf_category_desc">
+                                    <div class="utf_category_icon"><i class="ti-ruler-pencil" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="category-detail utf_category_desc_text">
+                                        <h4>翻译</h4>
+                                        <p>146 Jobs</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <a href="javascript:void(0)" title="">
+                            <div class="utf_category_box_area">
+                                <div class="utf_category_desc">
+                                    <div class="utf_category_icon"><i class="icon-briefcase" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="category-detail utf_category_desc_text">
+                                        <h4>市场销售</h4>
+                                        <p>144 Jobs</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <a href="javascript:void(0)" title="">
+                            <div class="utf_category_box_area">
+                                <div class="utf_category_desc">
+                                    <div class="utf_category_icon"><i class="icon-wine" aria-hidden="true"></i></div>
+                                    <div class="category-detail utf_category_desc_text">
+                                        <h4>图像设计</h4>
+                                        <p>129 Jobs</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <a href="javascript:void(0)" title="">
+                            <div class="utf_category_box_area">
+                                <div class="utf_category_desc">
+                                    <div class="utf_category_icon"><i class="ti-world" aria-hidden="true"></i></div>
+                                    <div class="category-detail utf_category_desc_text">
+                                        <h4>数字营销</h4>
+                                        <p>116 Jobs</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <a href="javascript:void(0)" title="">
+                            <div class="utf_category_box_area">
+                                <div class="utf_category_desc">
+                                    <div class="utf_category_icon"><i class="ti-desktop" aria-hidden="true"></i></div>
+                                    <div class="category-detail utf_category_desc_text">
+                                        <h4>教育培训</h4>
+                                        <p>40 Jobs</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-12 mrg-top-20 text-center">
+                        <a href="javascript:void(0)"
+                           class="btn theme-btn btn-m">查&nbsp;看&nbsp;所&nbsp;有&nbsp;类&nbsp;别</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+<section class="newsletter theme-bg" style="background-image:url(../static/imgs/bg-new.png)">
+</section>
+
+
+<!-- Signup Code -->
+<div class="modal fade" id="signin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" id="myModalLabel1">
+            <div class="modal-body">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs nav-advance theme-bg" role="tablist">
+                    <li class="nav-item active"><a class="nav-link" data-toggle="tab" href="#employer" role="tab"> <i
+                            class="ti-user"></i>用&nbsp;户&nbsp;登&nbsp;录</a></li>
+                </ul>
+                <!-- Nav tabs -->
+                <!-- Tab panels -->
+                <div class="tab-content">
+                    <!-- Login Panel -->
+                    <div class="tab-pane fade in show active" id="employer" role="tabpanel">
+                        <form action="{% url 'login' %}" method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <input name="login_email" type="text" class="form-control" placeholder="用户名或邮箱">
+                            </div>
+                            <div class="form-group">
+                                <input name="login_pw" type="password" class="form-control" placeholder="密码">
+                            </div>
+                            <div class="form-group">
+                                <span class="custom-checkbox">
+                                    <input type="checkbox" id="4">
+                                    <label for="4"></label>记住密码</span>
+                                <a href="#" title="Forget" class="fl-right">忘记密码?</a>
+                            </div>
+                            <div class="form-group text-center">
+                                <button type="submit" class="btn theme-btn full-width btn-m">登录</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!--/.Panel -->
+
+                </div>
+                <!-- Tab panels -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Signup -->
+<div><a href="#" class="scrollup">Scroll</a></div>
+
+<!-- Jquery js-->
+
+<script src={% static "js/jquery-ui.js" %}></script>
+<script src={% static "plugins/bootstrap/js/bootstrap.min.js" %}></script>
+<script src={% static "plugins/bootstrap/js/bootsnav.js" %}></script>
+<script src={% static "js/viewportchecker.js" %}></script>
+<script src={% static "js/slick.js" %}></script>
+<script src={% static "plugins/bootstrap/js/wysihtml5-0.3.0.js" %}></script>
+<script src={% static "plugins/bootstrap/js/bootstrap-wysihtml5.js" %}></script>
+<script src={% static "plugins/aos-master/aos.js" %}></script>
+<script src={% static "plugins/nice-select/js/jquery.nice-select.min.js" %}></script>
+<script src={% static "js/custom.js" %}></script>
+<script>
+    $(window).load(function () {
+        $(".page_preloader").fadeOut("slow");
+    });
+    AOS.init();
+</script>
+{% block search %}
+    <script>
+        $('#keywords').on('input', function () {
+            association();
+        })
+
+        function association() {
+            var searchData = $('#keywords').val()
+            console.log(searchData)
+            $.ajax({
+                url: "/analysis/associate",
+                type: 'post',
+                dataType: "json",
+                data: {
+                    'searchData': searchData,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function (data) {
+                    var res = data.association;
+                    console.log(res)
+                    $("#keywords").autocomplete({
+                        source: res,
+                        //定义至少输入几个字符就可以查询
+                        minLength: 1
+                    });
+                }
+            });
+        }
+    </script>
+    <script>
+        //地区
+        var area = $("#area").find("option:selected").text()
+        console.log(area)
+        $("#area").change(function () {
+            area = $("#area").find("option:selected").text()
+            console.log(area)
+        })
+
+        //岗位
+        var position = $("#position").find("option:selected").text()
+        console.log(position)
+        $("#position").change(function () {
+            position = $("#position").find("option:selected").text()
+            console.log(position)
+        })
+
+        //关键词搜索
+        {#$("#search").on('click', function () {#}
+        {#    var keywords = $("#keywords").val()#}
+        {#    console.log(area)#}
+        {#    console.log(position)#}
+        {#    console.log(keywords)#}
+        {##}
+        {#    window.location.href='http://127.0.0.1:8000/analysis/jobDetail'#}
+        {# })#}
+
+    </script>
+{% endblock %}
+
+{% block popup_js %}
+    <script>
+        var Popup = document.getElementById('Popup'),
+            dlg = new DialogFx(Popup);
+
+        function company_detail(obj) {
+            var company_name = $(obj).text();
+            {#console.log(company_name)#}
+            $.ajax({
+                url: '/analysis/companyDetail',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    'companyName': company_name,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function (data) {
+                    $("#title").html('<strong>' + company_name + '</strong>');
+                    $("#introduction").html(data.introduction);
+                    $('#origin').attr('href', data.link);
+                    dlg.toggle.bind(dlg)()
+                }
+            })
+        }
+    </script>
+{% endblock %}
+
+<script>
+    var userid =
+    {{ request.user.id }}
+    var username = `{{ request.user }}`
+    console.log(username)
+    var html_text = `<li class="br-right">
+                          <a class="btn-signup red-btn" href="javascript:void(0)" data-toggle="modal" data-target="">
+                          <i class="login-icon ti-user"></i>${username}</a>
+                     </li>
+                     <li class="sign-up">
+                          <a class="btn-signup red-btn" href="{% url 'logout' %}"><span class="ti-brush-alt"></span>注销</a>
+                     </li>`
+    if (typeof userid === 'number') {
+        $("#user-head").html(html_text)
+    }
+</script>
+{% block register %}{% endblock %}
+</body>
+</html>

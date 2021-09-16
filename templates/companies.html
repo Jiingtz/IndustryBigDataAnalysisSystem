@@ -1,0 +1,68 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block index %}
+    <li class="dropdown"><a style="font-size: 18px" href="{% url 'index' %}">首页</a></li>
+{% endblock %}
+{% block company %}
+    <li class="dropdown active"><a style="font-size: 18px" href="{% url 'companies' %}">公司</a></li>
+{% endblock %}
+
+{% block indexBody %}
+    <!-- ======================= Start Page Title ===================== -->
+    <div class="page-title">
+        <div class="container">
+            <div class="page-caption text-center">
+                <h2>所有公司</h2>
+                <p><a href="{% url 'index' %}" title="Home">主页</a> <i class="ti-angle-double-right"></i>所有公司</p>
+            </div>
+        </div>
+    </div>
+    <!-- ======================= End Page Title ===================== -->
+
+
+    <!-- ====================== Start Job Detail 2 ================ -->
+    <section class="padd-top-20 padd-bot-80">
+        <div class="container">
+            <div class="row">
+                {% for company in companies %}
+                    <div class="col-md-3 col-sm-6">
+                        <div class="utf_grid_job_widget_area"><span class="job-type full-type">{{ company.2 }}</span>
+                            <div class="utf_job_like">
+                                <label class="toggler toggler-danger">
+                                    <input type="checkbox">
+                                    <i class="fa fa-heart"></i> </label>
+                            </div>
+                            <div class="u-content">
+                                <div class="avatar box-80">
+                                    <a href="javascript:void(0)" onclick="company_detail(this)">
+                                        <img class="img-responsive"
+                                             src="../static/imgs/company/boss/{{ company.0 }}.png"
+                                             alt="">{{ company.1 }}
+                                    </a>
+                                </div>
+                                <h5><a href="javascript:void(0)" onclick="company_detail(this)">{{ company.1 }}</a></h5>
+                                <p class="text-muted">{{ company.3 }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </div>
+            {#            <div class="clearfix"></div>#}
+            {#            <div class="utf_flexbox_area padd-0">#}
+            {#                <ul class="pagination">#}
+            {#                    <li class="page-item"><a class="page-link" href="#" aria-label="Previous"> <span#}
+            {#                            aria-hidden="true">«</span> <span class="sr-only">Previous</span> </a></li>#}
+            {#                    <li class="page-item active"><a class="page-link" href="#">1</a></li>#}
+            {#                    <li class="page-item"><a class="page-link" href="#">2</a></li>#}
+            {#                    <li class="page-item"><a class="page-link" href="#">3</a></li>#}
+            {#                    <li class="page-item"><a class="page-link" href="#" aria-label="Next">#}
+            {#                        <span aria-hidden="true">»</span>#}
+            {#                        <span class="sr-only">Next</span> </a></li>#}
+            {#                </ul>#}
+            {#            </div>#}
+        </div>
+    </section>
+    <!-- ====================== End Job Detail 2 ================ -->
+{% endblock %}
+{% block search %}{% endblock %}

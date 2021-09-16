@@ -1,0 +1,73 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block index %}
+    <li class="dropdown"><a style="font-size: 18px" href="{% url 'index' %}">首页</a></li>
+{% endblock %}
+{% block indexBody %}
+
+    <!-- ======================= Start Page Title ===================== -->
+    <div class="page-title">
+        <div class="container">
+            <div class="page-caption">
+                <h2>用户注册</h2>
+                <p><a href="{% url 'index' %}" title="Home">首页</a> <i class="ti-angle-double-right"></i>注册</p>
+            </div>
+        </div>
+    </div>
+    <!-- ======================= End Page Title ===================== -->
+
+    <!-- ====================== Start Signup Form ============= -->
+    <section class="padd-top-80 padd-bot-80">
+        <div class="container">
+            <div class="log-box">
+                <form class="log-form" method="post">
+                    {% csrf_token %}
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>用户名</label>
+                            <input id="register_name" name="register_name" type="text" class="form-control"
+                                   placeholder="">
+                        </div>
+                        <span id="check_name" style='color: red'></span>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>邮箱</label>
+                            <input id="register_email" name="register_email" type="email" class="form-control"
+                                   placeholder="">
+                        </div>
+                        <span id="check_email" style='color: red'></span>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>密码</label>
+                            <input id="register_pw" name="register_pw" type="password" class="form-control"
+                                   placeholder="">
+                        </div>
+                        <span id="check_pwd" style='color: red'></span>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>确认密码</label>
+                            <input id="register_pw_again" name="register_pw_again" type="password" class="form-control"
+                                   placeholder="">
+                        </div>
+                        <span id="check_cpwd" style='color: red'></span>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group text-center mrg-top-15">
+                            <button type="submit" class="btn theme-btn btn-m full-width">注册</button>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <!-- ====================== End Signup Form ============= -->
+
+{% endblock %}
+{% block search %}{% endblock %}
+{% block register %}
+    <script src="{% static 'js/register.js' %}"></script>
+{% endblock %}
